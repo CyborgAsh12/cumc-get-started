@@ -1,0 +1,1369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CUMC Climbing Skills Pathway | Interactive Guide</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        * { scroll-behavior: smooth; }
+        
+        body {
+            background: #f3f4f6;
+        }
+
+        .sidebar-bg {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
+                        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800"><rect fill="%23223344" width="1200" height="800"/><path fill="%23334455" d="M0 200 Q300 150 600 200 T1200 200 L1200 800 L0 800 Z"/></svg>');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 500;
+        }
+
+        .nav-item:hover {
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+        }
+
+        .nav-item.active {
+            background: rgba(255, 255, 255, 0.25);
+            color: white;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            border-left: 3px solid #ff6b35;
+            padding-left: calc(1rem - 3px);
+        }
+
+        .nav-section-title {
+            font-size: 0.75rem;
+            font-weight: 900;
+            letter-spacing: 0.15em;
+            color: rgba(255, 255, 255, 0.5);
+            text-transform: uppercase;
+            margin-top: 1.5rem;
+            margin-bottom: 0.5rem;
+            margin-left: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-section-title:first-child {
+            margin-top: 0;
+            border-top: none;
+        }
+
+        .icon-nav {
+            width: 1.5rem;
+            text-align: center;
+            font-size: 1.2rem;
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-slide-up {
+            animation: slideInUp 0.4s ease-out;
+        }
+
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+        }
+
+        .skill-expansion {
+            transition: all 0.3s ease;
+        }
+
+        .skill-expansion.expanded {
+            max-height: 1000px;
+            opacity: 1;
+        }
+
+        .skill-expansion.collapsed {
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+        }
+
+        .youtube-embed {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .youtube-embed iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+            border-radius: 8px;
+        }
+
+        .skill-checklist {
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+
+        .skill-checklist li {
+            padding: 0.5rem 0;
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .skill-checklist input[type="checkbox"] {
+            margin-top: 2px;
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                position: fixed;
+                left: 0;
+                top: 0;
+                height: 100vh;
+                z-index: 40;
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .sidebar-overlay {
+                display: none;
+                position: fixed;
+                inset: 0;
+                background: rgba(0, 0, 0, 0.5);
+                z-index: 30;
+            }
+
+            .sidebar.open ~ .sidebar-overlay {
+                display: block;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- SIDEBAR -->
+    <div class="hidden md:flex fixed left-0 top-0 h-screen w-64 flex-col overflow-y-auto sidebar-bg text-white shadow-xl z-50 sidebar-toggle" id="sidebar">
+        <!-- Logo -->
+        <div class="flex h-16 items-center border-b border-white/20 px-6 shrink-0">
+            <a href="https://www.cumc.org.uk/home" class="flex items-center gap-3">
+                <div class="flex h-9 w-9 items-center justify-center rounded-full bg-white p-1.5 shadow-lg">
+                    <img src="https://www.cumc.org.uk/assets/logo-DjnpqNOX.webp" alt="CUMC" class="h-full w-full object-contain">
+                </div>
+                <span class="text-xl font-extrabold tracking-wider uppercase">CUMC</span>
+            </a>
+        </div>
+
+        <!-- Navigation -->
+        <div class="flex-1 overflow-y-auto px-3 py-6">
+            <!-- Skills Pathway (Current) -->
+            <div class="nav-section-title">Skills</div>
+            <a onclick="scrollToStage(1)" class="nav-item active">
+                <div class="icon-nav"><i class="fas fa-graduation-cap"></i></div>
+                <span class="tracking-wide">Skills Pathway</span>
+            </a>
+
+            <!-- Home -->
+            <div class="nav-section-title mt-8">Navigation</div>
+            <a href="https://www.cumc.org.uk/home" class="nav-item">
+                <div class="icon-nav"><i class="fas fa-home"></i></div>
+                <span class="tracking-wide">Home</span>
+            </a>
+            <a href="https://www.cumc.org.uk/blog" class="nav-item">
+                <div class="icon-nav"><i class="fas fa-newspaper"></i></div>
+                <span class="tracking-wide">Blog</span>
+            </a>
+
+            <!-- About -->
+            <div class="nav-section-title">About</div>
+            <a href="https://www.cumc.org.uk/about/club" class="nav-item">
+                <div class="icon-nav"><i class="fas fa-info-circle"></i></div>
+                <span class="tracking-wide">The Club</span>
+            </a>
+            <a href="https://www.cumc.org.uk/about/committee" class="nav-item">
+                <div class="icon-nav"><i class="fas fa-users"></i></div>
+                <span class="tracking-wide">Committee</span>
+            </a>
+            <a href="https://www.cumc.org.uk/about/competitions" class="nav-item">
+                <div class="icon-nav"><i class="fas fa-medal"></i></div>
+                <span class="tracking-wide">Competitions</span>
+            </a>
+            <a href="https://www.cumc.org.uk/about/gear" class="nav-item">
+                <div class="icon-nav"><i class="fas fa-cog"></i></div>
+                <span class="tracking-wide">Gear</span>
+            </a>
+            <a href="https://www.cumc.org.uk/about/resources" class="nav-item">
+                <div class="icon-nav"><i class="fas fa-book"></i></div>
+                <span class="tracking-wide">Resources</span>
+            </a>
+            <a href="https://www.cumc.org.uk/about/documents" class="nav-item">
+                <div class="icon-nav"><i class="fas fa-file"></i></div>
+                <span class="tracking-wide">Documents</span>
+            </a>
+
+            <!-- Meets -->
+            <div class="nav-section-title">Meets</div>
+            <a href="https://www.cumc.org.uk/meets/upcoming" class="nav-item">
+                <div class="icon-nav"><i class="fas fa-calendar"></i></div>
+                <span class="tracking-wide">Upcoming</span>
+            </a>
+            <a href="https://www.cumc.org.uk/meets/indoor" class="nav-item">
+                <div class="icon-nav"><i class="fas fa-dumbbell"></i></div>
+                <span class="tracking-wide">Indoor</span>
+            </a>
+            <a href="https://www.cumc.org.uk/meets/outdoor" class="nav-item">
+                <div class="icon-nav"><i class="fas fa-mountain"></i></div>
+                <span class="tracking-wide">Outdoor</span>
+            </a>
+            <a href="https://www.cumc.org.uk/meets/social" class="nav-item">
+                <div class="icon-nav"><i class="fas fa-wine-glass"></i></div>
+                <span class="tracking-wide">Social</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- SIDEBAR OVERLAY (Mobile) -->
+    <div class="sidebar-overlay md:hidden" onclick="toggleSidebar()"></div>
+
+    <!-- MAIN CONTENT -->
+    <div class="md:ml-64 flex flex-col min-h-screen">
+        <!-- HEADER -->
+        <header class="bg-white border-b border-gray-200 sticky top-0 z-40 shadow-sm">
+            <div class="px-4 sm:px-6 lg:px-8 py-4">
+                <div class="flex items-center justify-between">
+                    <!-- Mobile Menu Toggle -->
+                    <button onclick="toggleSidebar()" class="md:hidden text-gray-700 hover:text-gray-900">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+
+                    <div class="flex-1 md:flex-none">
+                        <h1 class="text-2xl font-bold text-gray-900">CUMC Climbing Skills</h1>
+                    </div>
+
+                    <a href="https://www.cumc.org.uk/home" class="text-sm font-medium text-gray-700 hover:text-blue-600 transition hidden sm:inline">
+                        Back to CUMC
+                    </a>
+                </div>
+
+                <!-- PROGRESS BAR -->
+                <div class="mt-4">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-sm font-medium text-gray-700" id="progressLabel">Getting started...</span>
+                        <span class="text-sm text-gray-600" id="progressPercent">0%</span>
+                    </div>
+                    <div class="w-full bg-gray-300 rounded-full h-2">
+                        <div class="bg-gradient-to-r from-blue-600 to-cyan-600 h-2 rounded-full transition-all duration-300" id="progressBar" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- PAGE CONTENT -->
+        <main class="flex-1 px-4 sm:px-6 lg:px-8 py-8 max-w-5xl mx-auto w-full">
+            <div id="flowchart" class="space-y-6">
+                <!-- STAGE 1: WELCOME -->
+                <div id="stage-1" class="stage animate-slide-up">
+                    <div class="bg-white rounded-lg shadow-md border border-gray-200 p-8">
+                        <h2 class="text-3xl font-bold text-gray-900 mb-2">👋 Welcome to CUMC Climbing</h2>
+                        <p class="text-gray-600 mb-6">Let's create your personalised climbing pathway. Answer a few quick questions to get started.</p>
+                        
+                        <div class="mb-8">
+                            <h3 class="text-lg font-semibold text-gray-900 mb-4">What's your climbing experience?</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <button onclick="selectLevel('beginner')" class="p-4 border-2 border-gray-300 rounded-lg hover:border-green-500 hover:bg-green-50 transition group">
+                                    <div class="text-2xl mb-2">🟢</div>
+                                    <h4 class="font-bold text-gray-900 group-hover:text-green-700">Brand New</h4>
+                                    <p class="text-sm text-gray-600 group-hover:text-green-600">0-3 months climbing</p>
+                                </button>
+                                <button onclick="selectLevel('intermediate')" class="p-4 border-2 border-gray-300 rounded-lg hover:border-yellow-500 hover:bg-yellow-50 transition group">
+                                    <div class="text-2xl mb-2">🟡</div>
+                                    <h4 class="font-bold text-gray-900 group-hover:text-yellow-700">Intermediate</h4>
+                                    <p class="text-sm text-gray-600 group-hover:text-yellow-600">3-12 months experience</p>
+                                </button>
+                                <button onclick="selectLevel('advanced')" class="p-4 border-2 border-gray-300 rounded-lg hover:border-red-500 hover:bg-red-50 transition group">
+                                    <div class="text-2xl mb-2">🔴</div>
+                                    <h4 class="font-bold text-gray-900 group-hover:text-red-700">Advanced</h4>
+                                    <p class="text-sm text-gray-600 group-hover:text-red-600">12+ months climbing</p>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- STAGE 2: DISCIPLINE -->
+                <div id="stage-2" class="stage hidden">
+                    <div class="bg-white rounded-lg shadow-md border border-gray-200 p-8 animate-slide-up">
+                        <h2 class="text-3xl font-bold text-gray-900 mb-2">🏔️ Climbing Discipline</h2>
+                        <p class="text-gray-600 mb-6">Which style of climbing interests you most?</p>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                            <button onclick="selectDiscipline('bouldering')" class="p-4 border-2 border-gray-300 rounded-lg hover:border-purple-500 hover:bg-purple-50 transition group">
+                                <div class="text-2xl mb-2">🧗</div>
+                                <h4 class="font-bold text-gray-900">Bouldering</h4>
+                                <p class="text-sm text-gray-600">Short walls, no ropes</p>
+                            </button>
+                            <button onclick="selectDiscipline('sport')" class="p-4 border-2 border-gray-300 rounded-lg hover:border-purple-500 hover:bg-purple-50 transition group">
+                                <div class="text-2xl mb-2">🪂</div>
+                                <h4 class="font-bold text-gray-900">Sport Climbing</h4>
+                                <p class="text-sm text-gray-600">Rope & carabiners</p>
+                            </button>
+                            <button onclick="selectDiscipline('trad')" class="p-4 border-2 border-gray-300 rounded-lg hover:border-purple-500 hover:bg-purple-50 transition group">
+                                <div class="text-2xl mb-2">⛏️</div>
+                                <h4 class="font-bold text-gray-900">Trad Climbing</h4>
+                                <p class="text-sm text-gray-600">Placed protection</p>
+                            </button>
+                            <button onclick="selectDiscipline('mixed')" class="p-4 border-2 border-gray-300 rounded-lg hover:border-purple-500 hover:bg-purple-50 transition group">
+                                <div class="text-2xl mb-2">🔀</div>
+                                <h4 class="font-bold text-gray-900">Mix of All</h4>
+                                <p class="text-sm text-gray-600">Try everything</p>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- STAGE 3: COMMITMENT -->
+                <div id="stage-3" class="stage hidden">
+                    <div class="bg-white rounded-lg shadow-md border border-gray-200 p-8 animate-slide-up">
+                        <h2 class="text-3xl font-bold text-gray-900 mb-2">⏰ Training Commitment</h2>
+                        <p class="text-gray-600 mb-6">How many times per week can you climb?</p>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <button onclick="selectCommitment('casual')" class="p-4 border-2 border-gray-300 rounded-lg hover:border-pink-500 hover:bg-pink-50 transition group">
+                                <div class="text-2xl mb-2">🌱</div>
+                                <h4 class="font-bold text-gray-900">Casual</h4>
+                                <p class="text-sm text-gray-600">1-2 sessions/week</p>
+                            </button>
+                            <button onclick="selectCommitment('regular')" class="p-4 border-2 border-gray-300 rounded-lg hover:border-pink-500 hover:bg-pink-50 transition group">
+                                <div class="text-2xl mb-2">💪</div>
+                                <h4 class="font-bold text-gray-900">Regular</h4>
+                                <p class="text-sm text-gray-600">3-4 sessions/week</p>
+                            </button>
+                            <button onclick="selectCommitment('serious')" class="p-4 border-2 border-gray-300 rounded-lg hover:border-pink-500 hover:bg-pink-50 transition group">
+                                <div class="text-2xl mb-2">🔥</div>
+                                <h4 class="font-bold text-gray-900">Serious</h4>
+                                <p class="text-sm text-gray-600">5-6 sessions/week</p>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- STAGE 4: GOALS -->
+                <div id="stage-4" class="stage hidden">
+                    <div class="bg-white rounded-lg shadow-md border border-gray-200 p-8 animate-slide-up">
+                        <h2 class="text-3xl font-bold text-gray-900 mb-2">🎯 Training Goals</h2>
+                        <p class="text-gray-600 mb-6">What do you want to achieve?</p>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                            <button onclick="selectGoal('strength')" class="p-4 border-2 border-gray-300 rounded-lg hover:border-cyan-500 hover:bg-cyan-50 transition">
+                                <div class="text-2xl mb-2">💪</div>
+                                <h4 class="font-bold text-gray-900">Build Strength</h4>
+                                <p class="text-sm text-gray-600">Max power</p>
+                            </button>
+                            <button onclick="selectGoal('endurance')" class="p-4 border-2 border-gray-300 rounded-lg hover:border-cyan-500 hover:bg-cyan-50 transition">
+                                <div class="text-2xl mb-2">🏃</div>
+                                <h4 class="font-bold text-gray-900">Endurance</h4>
+                                <p class="text-sm text-gray-600">Stamina & volume</p>
+                            </button>
+                            <button onclick="selectGoal('technique')" class="p-4 border-2 border-gray-300 rounded-lg hover:border-cyan-500 hover:bg-cyan-50 transition">
+                                <div class="text-2xl mb-2">🎯</div>
+                                <h4 class="font-bold text-gray-900">Technique</h4>
+                                <p class="text-sm text-gray-600">Perfect form</p>
+                            </button>
+                            <button onclick="selectGoal('balanced')" class="p-4 border-2 border-gray-300 rounded-lg hover:border-cyan-500 hover:bg-cyan-50 transition">
+                                <div class="text-2xl mb-2">⚖️</div>
+                                <h4 class="font-bold text-gray-900">Balanced</h4>
+                                <p class="text-sm text-gray-600">Overall growth</p>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- STAGE 5: RESULTS -->
+                <div id="stage-5" class="stage hidden">
+                    <div class="bg-white rounded-lg shadow-md border border-gray-200 p-8 animate-slide-up">
+                        <h2 class="text-3xl font-bold text-gray-900 mb-2" id="resultTitle">Your Personalised Pathway</h2>
+                        <p class="text-gray-600 mb-6">Based on your profile, here's your complete training plan.</p>
+
+                        <!-- PROFILE SUMMARY -->
+                        <div class="bg-blue-50 border-l-4 border-blue-600 p-4 rounded mb-8">
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                <div>
+                                    <p class="text-xs font-semibold text-blue-600 uppercase">Level</p>
+                                    <p class="text-lg font-bold text-gray-900" id="profileLevel"></p>
+                                </div>
+                                <div>
+                                    <p class="text-xs font-semibold text-blue-600 uppercase">Discipline</p>
+                                    <p class="text-lg font-bold text-gray-900" id="profileDiscipline"></p>
+                                </div>
+                                <div>
+                                    <p class="text-xs font-semibold text-blue-600 uppercase">Commitment</p>
+                                    <p class="text-lg font-bold text-gray-900" id="profileCommitment"></p>
+                                </div>
+                                <div>
+                                    <p class="text-xs font-semibold text-blue-600 uppercase">Goal</p>
+                                    <p class="text-lg font-bold text-gray-900" id="profileGoal"></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- LEVEL-SPECIFIC CONTENT -->
+                        <div id="level-content" class="mb-8"></div>
+
+                        <!-- BEGINNER GETTING STARTED -->
+                        <div id="beginner-getting-started" class="hidden bg-gradient-to-r from-green-50 to-emerald-50 rounded-lg border-2 border-green-200 p-6 mb-8">
+                            <h3 class="text-2xl font-bold text-green-900 mb-6">🟢 Getting Started as a Beginner</h3>
+                            
+                            <div class="space-y-6">
+                                <!-- FIRST STEPS -->
+                                <div>
+                                    <h4 class="text-lg font-bold text-green-900 mb-3 flex items-center gap-2">
+                                        <span class="bg-green-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">1</span>
+                                        First Steps - Your First Climbing Session
+                                    </h4>
+                                    <div class="bg-white rounded-lg p-4 space-y-3 text-gray-700">
+                                        <p><strong>Start with the Monday Bouldering Social:</strong></p>
+                                        <ul class="list-disc list-inside space-y-2 ml-2">
+                                            <li>Mondays 7-9pm at Kelsey Kerridge bouldering wall</li>
+                                            <li>Followed by a trip to the pub to meet other members</li>
+                                            <li><strong>No experience needed</strong> - everyone starts here</li>
+                                            <li>£0 if you're a member, £6 if not (one free try-out session available)</li>
+                                        </ul>
+                                        <p class="pt-2"><strong>What to expect:</strong> Friendly, supportive atmosphere. Experienced climbers will show you the basics. No pressure, just learning.</p>
+                                    </div>
+                                </div>
+
+                                <!-- ESSENTIAL GEAR -->
+                                <div>
+                                    <h4 class="text-lg font-bold text-green-900 mb-3 flex items-center gap-2">
+                                        <span class="bg-green-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">2</span>
+                                        Essential Gear to Start
+                                    </h4>
+                                    <div class="bg-white rounded-lg p-4 space-y-3">
+                                        <p class="text-gray-700"><strong>Good news:</strong> You don't need much to get started. CUMC has rental gear available!</p>
+                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                            <div class="border border-green-300 rounded p-3 bg-green-50">
+                                                <p class="font-bold text-green-900 mb-2">What CUMC Provides (Free for Members)</p>
+                                                <ul class="text-sm text-gray-700 space-y-1">
+                                                    <li>✓ Harness (rock climbing)</li>
+                                                    <li>✓ Rope & carabiners</li>
+                                                    <li>✓ Climbing guidebooks</li>
+                                                    <li>✓ Crash pads (bouldering)</li>
+                                                    <li><a href="https://www.cumc.org.uk/about/gear" class="text-blue-600 font-semibold hover:underline">View all available gear →</a></li>
+                                                </ul>
+                                            </div>
+                                            <div class="border border-green-300 rounded p-3 bg-green-50">
+                                                <p class="font-bold text-green-900 mb-2">What You Should Buy</p>
+                                                <ul class="text-sm text-gray-700 space-y-1">
+                                                    <li>✓ Climbing shoes (£70-150)</li>
+                                                    <li>✓ Chalk and chalk bag (£10-20)</li>
+                                                    <li>✓ Brush for holds (£5)</li>
+                                                    <li>✓ Eventually: your own harness (£30-80)</li>
+                                                    <li><a href="https://www.cumc.org.uk/about/gear" class="text-blue-600 font-semibold hover:underline">Gear advice from CUMC →</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- MEMBERSHIP -->
+                                <div>
+                                    <h4 class="text-lg font-bold text-green-900 mb-3 flex items-center gap-2">
+                                        <span class="bg-green-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">3</span>
+                                        Become a Member
+                                    </h4>
+                                    <div class="bg-white rounded-lg p-4 space-y-3 text-gray-700">
+                                        <p><strong>Cost:</strong> £30 per academic year (or £25 if you join in Easter term)</p>
+                                        <p><strong>What membership includes:</strong></p>
+                                        <ul class="list-disc list-inside space-y-2 ml-2">
+                                            <li>Free access to all club equipment (ropes, harnesses, crash pads, guidebooks)</li>
+                                            <li>Reduced rates on club meets (usually £6 indoor, £15 outdoor)</li>
+                                            <li>BMC (British Mountaineering Council) insurance included</li>
+                                            <li>Access to exclusive social events and outdoor trips</li>
+                                            <li>Club stash (hoodies, t-shirts, etc.)</li>
+                                        </ul>
+                                        <p class="pt-3"><strong>How to join:</strong> <a href="https://www.cumc.org.uk/login" class="text-blue-600 font-semibold hover:underline">Create an account on the CUMC website and sign up in the Membership section →</a></p>
+                                    </div>
+                                </div>
+
+                                <!-- UPCOMING MEETS -->
+                                <div>
+                                    <h4 class="text-lg font-bold text-green-900 mb-3 flex items-center gap-2">
+                                        <span class="bg-green-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">4</span>
+                                        Your First Club Meet
+                                    </h4>
+                                    <div class="bg-white rounded-lg p-4 space-y-3 text-gray-700">
+                                        <p><strong>Non-members can attend one meet for free to try it out!</strong></p>
+                                        <p>Check out our regular meets:</p>
+                                        <ul class="list-disc list-inside space-y-2 ml-2">
+                                            <li><strong>Freshers' Meets (October):</strong> Perfect for new climbers. Bouldering, sports climbing, and social events</li>
+                                            <li><strong>Indoor Meets:</strong> Climb at various UK climbing gyms throughout term</li>
+                                            <li><strong>Outdoor Meets:</strong> Weekend trips to climbing areas (Stanage Edge, Peak District, etc.)</li>
+                                        </ul>
+                                        <p class="pt-3"><a href="https://www.cumc.org.uk/meets/upcoming" class="text-blue-600 font-semibold hover:underline">View upcoming meets and sign up →</a></p>
+                                    </div>
+                                </div>
+
+                                <!-- NEXT STEPS -->
+                                <div>
+                                    <h4 class="text-lg font-bold text-green-900 mb-3 flex items-center gap-2">
+                                        <span class="bg-green-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">5</span>
+                                        What Happens Next
+                                    </h4>
+                                    <div class="bg-white rounded-lg p-4 space-y-3 text-gray-700">
+                                        <p><strong>Month 1:</strong> Focus on technique. Come to socials, learn proper footwork and body positioning. Don't worry about difficulty.</p>
+                                        <p><strong>Month 2-3:</strong> Increase frequency to 3-4 sessions/week. Join an indoor meet. Start climbing harder routes. Build your foundation.</p>
+                                        <p><strong>Month 4+:</strong> Consider your next steps. Want to try outdoor climbing? Interested in trad or sport climbing? This is when you specialise.</p>
+                                        <p class="pt-2 font-semibold text-green-900">Remember: Everyone starts as a beginner. Be patient with yourself. Progress comes naturally with consistent, smart training.</p>
+                                    </div>
+                                </div>
+
+                                <!-- CONTACT & HELP -->
+                                <div>
+                                    <h4 class="text-lg font-bold text-green-900 mb-3">💬 Have Questions?</h4>
+                                    <div class="bg-white rounded-lg p-4 text-gray-700">
+                                        <p>The CUMC committee is here to help! You can:</p>
+                                        <ul class="list-disc list-inside space-y-2 ml-2 mt-2">
+                                            <li><a href="https://www.cumc.org.uk/about/committee" class="text-blue-600 font-semibold hover:underline">Email the committee →</a></li>
+                                            <li><a href="https://www.facebook.com/cumcofficial/" class="text-blue-600 font-semibold hover:underline">Message on Facebook →</a></li>
+                                            <li>Come to a Monday social and ask in person</li>
+                                            <li>Check the <a href="https://www.cumc.org.uk/about/resources" class="text-blue-600 font-semibold hover:underline">Resources section →</a> for guides and tips</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- TRAINING SCHEDULE -->
+                        <div class="bg-white rounded-lg border border-gray-200 p-6 mb-8">
+                            <h3 class="text-2xl font-bold text-gray-900 mb-4">📅 Your Weekly Schedule</h3>
+                            <div id="trainingSchedule" class="grid grid-cols-1 md:grid-cols-4 gap-4"></div>
+                        </div>
+
+                        <!-- CUMC MEETS & EVENTS -->
+                        <div class="bg-white rounded-lg border border-gray-200 p-6 mb-8">
+                            <h3 class="text-2xl font-bold text-gray-900 mb-4">🏔️ Join CUMC Meets - Prerequisites & What You Need</h3>
+                            <p class="text-gray-600 mb-6">Different meets have different requirements. Here's what you need for each:</p>
+                            <div id="cumc-meets" class="grid grid-cols-1 md:grid-cols-3 gap-4"></div>
+
+                            <!-- MEET TYPES & REQUIREMENTS -->
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+                                <!-- INDOOR MEETS -->
+                                <div class="border-2 border-blue-300 rounded-lg p-6 bg-blue-50">
+                                    <h4 class="text-lg font-bold text-blue-900 mb-4">🏢 Indoor Gym Meets</h4>
+                                    <p class="text-gray-700 mb-4"><strong>What they are:</strong> Climbing at indoor gyms (Kelsey Kerridge, Rainbow Rocket, etc.)</p>
+                                    
+                                    <div class="mb-4">
+                                        <p class="font-bold text-blue-900 mb-2">✓ Prerequisites:</p>
+                                        <ul class="text-sm text-gray-700 space-y-2 ml-2">
+                                            <li>• At least 2-3 climbing sessions experience</li>
+                                            <li>• Comfortable with basic footwork and grip</li>
+                                            <li>• Know how to warm up safely</li>
+                                            <li>• For top-rope: <strong>Must know how to belay</strong></li>
+                                            <li>• For bouldering: No belay needed, just courage!</li>
+                                        </ul>
+                                    </div>
+
+                                    <div class="mb-4">
+                                        <p class="font-bold text-blue-900 mb-2">📚 Learn to Belay:</p>
+                                        <ul class="text-sm text-gray-700 space-y-2 ml-2">
+                                            <li>• <a href="https://www.youtube.com/watch?v=Hs_0KaU2jM0" target="_blank" class="text-blue-600 font-semibold hover:underline">Top Rope Belay Setup →</a></li>
+                                            <li>• <a href="https://theclimbingdoctor.com/" target="_blank" class="text-blue-600 font-semibold hover:underline">The Climbing Doctor (Safety) →</a></li>
+                                            <li>• Ask experienced climbers at Monday socials</li>
+                                        </ul>
+                                    </div>
+
+                                    <div>
+                                        <p class="font-bold text-blue-900 mb-2">💰 Cost:</p>
+                                        <p class="text-sm text-gray-700">£6 per person if non-member, free if member</p>
+                                    </div>
+                                </div>
+
+                                <!-- OUTDOOR MEETS -->
+                                <div class="border-2 border-green-300 rounded-lg p-6 bg-green-50">
+                                    <h4 class="text-lg font-bold text-green-900 mb-4">🏔️ Outdoor Climbing Meets</h4>
+                                    <p class="text-gray-700 mb-4"><strong>What they are:</strong> Weekend trips to UK crags (Stanage, Peak District, etc.)</p>
+                                    
+                                    <div class="mb-4">
+                                        <p class="font-bold text-green-900 mb-2">✓ Prerequisites:</p>
+                                        <ul class="text-sm text-gray-700 space-y-2 ml-2">
+                                            <li>• At least 3+ months climbing experience</li>
+                                            <li>• Strong belay skills (mandatory)</li>
+                                            <li>• Comfortable on outdoor rock</li>
+                                            <li>• Suitable for: Bouldering, Sport, or Trad</li>
+                                            <li>• Your own shoes recommended</li>
+                                            <li>• Bring climbing guidebook or download beta</li>
+                                        </ul>
+                                    </div>
+
+                                    <div class="mb-4">
+                                        <p class="font-bold text-green-900 mb-2">🧗 Learn Sport or Trad:</p>
+                                        <ul class="text-sm text-gray-700 space-y-2 ml-2">
+                                            <li>• <a href="https://www.youtube.com/watch?v=BxZz-7KxkpE" target="_blank" class="text-green-600 font-semibold hover:underline">Lead Climbing Techniques →</a></li>
+                                            <li>• <a href="https://www.youtube.com/watch?v=2AcW6Y-I-PE" target="_blank" class="text-green-600 font-semibold hover:underline">Intro to Trad Climbing →</a></li>
+                                            <li>• Get mentored by experienced members</li>
+                                        </ul>
+                                    </div>
+
+                                    <div>
+                                        <p class="font-bold text-green-900 mb-2">💰 Cost:</p>
+                                        <p class="text-sm text-gray-700">£15 per person typically (covers transport, gear, etc.)</p>
+                                    </div>
+                                </div>
+
+                                <!-- BOULDERING MEETS -->
+                                <div class="border-2 border-purple-300 rounded-lg p-6 bg-purple-50">
+                                    <h4 class="text-lg font-bold text-purple-900 mb-4">🧗 Bouldering-Specific Meets</h4>
+                                    <p class="text-gray-700 mb-4"><strong>What they are:</strong> Dedicated bouldering sessions at crags or gyms</p>
+                                    
+                                    <div class="mb-4">
+                                        <p class="font-bold text-purple-900 mb-2">✓ Prerequisites:</p>
+                                        <ul class="text-sm text-gray-700 space-y-2 ml-2">
+                                            <li>• Beginner friendly! Just 1-2 months OK</li>
+                                            <li>• No belay skills needed</li>
+                                            <li>• You spot for others (learn how)</li>
+                                            <li>• Bring crash pad for outdoor bouldering</li>
+                                            <li>• Wear appropriate clothing (no loose items)</li>
+                                            <li>• Good footwear recommended</li>
+                                        </ul>
+                                    </div>
+
+                                    <div class="mb-4">
+                                        <p class="font-bold text-purple-900 mb-2">📚 Learn Spotting:</p>
+                                        <ul class="text-sm text-gray-700 space-y-2 ml-2">
+                                            <li>• <a href="https://www.youtube.com/watch?v=8_VkfKJO5IM" target="_blank" class="text-purple-600 font-semibold hover:underline">How to Spot Climbers →</a></li>
+                                            <li>• Ask at Monday socials (super friendly!)</li>
+                                            <li>• Practice with experienced climbers first</li>
+                                        </ul>
+                                    </div>
+
+                                    <div>
+                                        <p class="font-bold text-purple-900 mb-2">💰 Cost:</p>
+                                        <p class="text-sm text-gray-700">£6 indoor, £15 outdoor typically</p>
+                                    </div>
+                                </div>
+
+                                <!-- ROPE CLIMBING DISCIPLINES -->
+                                <div class="border-2 border-orange-300 rounded-lg p-6 bg-orange-50">
+                                    <h4 class="text-lg font-bold text-orange-900 mb-4">🪂 Rope Climbing (Sport & Trad)</h4>
+                                    <p class="text-gray-700 mb-4"><strong>Key difference:</strong> Sport = pre-placed bolts, Trad = you place gear</p>
+                                    
+                                    <div class="mb-4">
+                                        <p class="font-bold text-orange-900 mb-2">Sport Climbing Prerequisites:</p>
+                                        <ul class="text-sm text-gray-700 space-y-2 ml-2">
+                                            <li>• 3+ months experience minimum</li>
+                                            <li>• Strong top-rope belaying skills</li>
+                                            <li>• Know how to clip carabiners</li>
+                                            <li>• Comfortable leading indoors first</li>
+                                            <li>• Learn to fall safely (practice with partner)</li>
+                                        </ul>
+                                    </div>
+
+                                    <div class="mb-4">
+                                        <p class="font-bold text-orange-900 mb-2">Trad Climbing Prerequisites:</p>
+                                        <ul class="text-sm text-gray-700 space-y-2 ml-2">
+                                            <li>• 12+ months climbing experience</li>
+                                            <li>• Expert sport climbing skills first</li>
+                                            <li>• Formal trad course required (£100-200)</li>
+                                            <li>• Learn gear placement & anchor building</li>
+                                            <li>• Mentorship from experienced member</li>
+                                        </ul>
+                                    </div>
+
+                                    <div>
+                                        <p class="font-bold text-orange-900 mb-2">📚 Learn Leading:</p>
+                                        <ul class="text-sm text-gray-700 space-y-2 ml-2">
+                                            <li>• <a href="https://www.youtube.com/watch?v=BxZz-7KxkpE" target="_blank" class="text-orange-600 font-semibold hover:underline">Lead Climbing 101 →</a></li>
+                                            <li>• <a href="https://theclimbingdoctor.com/" target="_blank" class="text-orange-600 font-semibold hover:underline">Injury Prevention for Leadersrs →</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- SKILL PROGRESSIONS WITH DETAILED INFO -->
+                        <div class="bg-white rounded-lg border border-gray-200 p-6 mb-8">
+                            <h3 class="text-2xl font-bold text-gray-900 mb-4">🚀 Skill Progressions (Click to Expand)</h3>
+                            <div id="skill-progressions" class="space-y-2"></div>
+                        </div>
+
+                        <!-- EMBEDDED VIDEOS -->
+                        <div class="bg-white rounded-lg border border-gray-200 p-6 mb-8">
+                            <h3 class="text-2xl font-bold text-gray-900 mb-4">📺 Learning Videos</h3>
+                            <div id="videos-section" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
+                        </div>
+
+                        <!-- RESOURCES & TECHNIQUE GUIDES -->
+                        <div class="bg-white rounded-lg border border-gray-200 p-6 mb-8">
+                            <h3 class="text-2xl font-bold text-gray-900 mb-4">📚 Technique Resources & Guides</h3>
+                            <p class="text-gray-600 mb-6">Learn from expert climbing coaches and injury prevention specialists:</p>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <!-- Technique Learning -->
+                                <div class="border border-blue-300 rounded-lg p-4 bg-blue-50">
+                                    <h4 class="font-bold text-blue-900 mb-3">🎯 Technique & Training</h4>
+                                    <ul class="space-y-2 text-sm">
+                                        <li>
+                                            <a href="https://www.trainingbeta.com/" target="_blank" class="text-blue-600 font-semibold hover:underline">TrainingBeta →</a>
+                                            <p class="text-gray-700">Comprehensive climbing technique videos, training plans, and expert coaching from famous climbers</p>
+                                        </li>
+                                        <li>
+                                            <a href="https://www.latticetraining.com/" target="_blank" class="text-blue-600 font-semibold hover:underline">Lattice Training →</a>
+                                            <p class="text-gray-700">Science-based climbing training, periodisation plans, fingerboard protocols</p>
+                                        </li>
+                                        <li>
+                                            <a href="https://www.neilgreshams.com/" target="_blank" class="text-blue-600 font-semibold hover:underline">Neil Gresham's Blog →</a>
+                                            <p class="text-gray-700">Climbing techniques, mental game, training philosophy from legendary climber</p>
+                                        </li>
+                                        <li>
+                                            <a href="https://www.youtube.com/@crimpscience" target="_blank" class="text-blue-600 font-semibold hover:underline">Crimp Science →</a>
+                                            <p class="text-gray-700">Science-backed climbing technique tutorials and training methodology</p>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <!-- Injury Prevention & Recovery -->
+                                <div class="border border-red-300 rounded-lg p-4 bg-red-50">
+                                    <h4 class="font-bold text-red-900 mb-3">🏥 Injury Prevention & Recovery</h4>
+                                    <ul class="space-y-2 text-sm">
+                                        <li>
+                                            <a href="https://theclimbingdoctor.com/" target="_blank" class="text-red-600 font-semibold hover:underline">The Climbing Doctor →</a>
+                                            <p class="text-gray-700">Medical expert on climbing injuries, prevention strategies, and rehabilitation</p>
+                                        </li>
+                                        <li>
+                                            <a href="https://www.stevemaisch.com/" target="_blank" class="text-red-600 font-semibold hover:underline">Steve Maisch - Climbing Science →</a>
+                                            <p class="text-gray-700">Injury prevention, training science, and climbing injury research</p>
+                                        </li>
+                                        <li>
+                                            <a href="https://www.shouldersavers.com/" target="_blank" class="text-red-600 font-semibold hover:underline">Shoulder Savers →</a>
+                                            <p class="text-gray-700">Shoulder health and injury prevention for climbers (common issue)</p>
+                                        </li>
+                                        <li>
+                                            <a href="https://www.youtube.com/@theclimbingphysio" target="_blank" class="text-red-600 font-semibold hover:underline">The Climbing Physio →</a>
+                                            <p class="text-gray-700">Climbing-specific physiotherapy, rehab exercises, injury management</p>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <!-- Fitness & Conditioning -->
+                                <div class="border border-purple-300 rounded-lg p-4 bg-purple-50">
+                                    <h4 class="font-bold text-purple-900 mb-3">💪 Fitness & Conditioning</h4>
+                                    <ul class="space-y-2 text-sm">
+                                        <li>
+                                            <a href="https://www.coolclimbing.com/" target="_blank" class="text-purple-600 font-semibold hover:underline">CoolClimbing →</a>
+                                            <p class="text-gray-700">Training programs, strength protocols, and climbing-specific conditioning</p>
+                                        </li>
+                                        <li>
+                                            <a href="https://www.crewes.org.uk/training/" target="_blank" class="text-purple-600 font-semibold hover:underline">Crewes Climbing Training →</a>
+                                            <p class="text-gray-700">Periodised training plans and bouldering-specific conditioning</p>
+                                        </li>
+                                        <li>
+                                            <a href="https://www.youtube.com/@TrainClimbing" target="_blank" class="text-purple-600 font-semibold hover:underline">TrainClimbing →</a>
+                                            <p class="text-gray-700">Climbing fitness, strength training, and movement quality</p>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <!-- General Knowledge -->
+                                <div class="border border-green-300 rounded-lg p-4 bg-green-50">
+                                    <h4 class="font-bold text-green-900 mb-3">🧗 General Climbing Knowledge</h4>
+                                    <ul class="space-y-2 text-sm">
+                                        <li>
+                                            <a href="https://www.mountaineering.co.uk/" target="_blank" class="text-green-600 font-semibold hover:underline">British Mountaineering Council →</a>
+                                            <p class="text-gray-700">UK climbing standards, safety information, insurance and governance</p>
+                                        </li>
+                                        <li>
+                                            <a href="https://www.ukclimbing.com/" target="_blank" class="text-green-600 font-semibold hover:underline">UK Climbing →</a>
+                                            <p class="text-gray-700">Climbing news, guides, route topos, and community forum</p>
+                                        </li>
+                                        <li>
+                                            <a href="https://www.27crags.com/" target="_blank" class="text-green-600 font-semibold hover:underline">27 Crags →</a>
+                                            <p class="text-gray-700">Climbing guidebook, route finder, and climbing location database</p>
+                                        </li>
+                                        <li>
+                                            <a href="https://www.youtube.com/@REI" target="_blank" class="text-green-600 font-semibold hover:underline">REI Co-op →</a>
+                                            <p class="text-gray-700">Beginner climbing tutorials, gear reviews, and general guidance</p>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- INJURY PREVENTION -->
+                        <div class="bg-red-50 border-l-4 border-red-600 p-6 rounded mb-8">
+                            <h3 class="text-2xl font-bold text-red-900 mb-4">🏥 Injury Prevention Essentials</h3>
+                            <ul class="space-y-2 text-gray-700">
+                                <li class="flex gap-2"><span class="text-red-600 font-bold">✓</span> <strong>Warm-up:</strong> 10-15 mins before every session</li>
+                                <li class="flex gap-2"><span class="text-red-600 font-bold">✓</span> <strong>Perfect form first:</strong> Before increasing difficulty</li>
+                                <li class="flex gap-2"><span class="text-red-600 font-bold">✓</span> <strong>Progressive loading:</strong> +10% per week max</li>
+                                <li class="flex gap-2"><span class="text-red-600 font-bold">✓</span> <strong>Listen to pain:</strong> Sharp pain = stop</li>
+                                <li class="flex gap-2"><span class="text-red-600 font-bold">✓</span> <strong>Rest days:</strong> 2-3 complete rest days/week</li>
+                            </ul>
+                        </div>
+
+                        <!-- CONTACT FORM -->
+                        <div class="bg-white rounded-lg border border-gray-200 p-6 mb-8">
+                            <h3 class="text-2xl font-bold text-gray-900 mb-4">📧 Contact Committee for Advice</h3>
+                            <p class="text-gray-600 mb-4">Interested in coaching or want to discuss your training plan? Get in touch with our committee.</p>
+                            <form onsubmit="submitContact(event)" id="contact-form" class="space-y-4">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <input type="text" placeholder="Your Name" required class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent outline-none">
+                                    <input type="email" placeholder="Your Email" required class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent outline-none">
+                                </div>
+                                <textarea placeholder="How can we help with your climbing?" rows="4" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent outline-none resize-none"></textarea>
+                                <button type="submit" class="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-6 py-3 rounded-lg font-semibold transition">Send Message</button>
+                            </form>
+                            <p id="contact-message" class="text-green-600 font-semibold mt-4 hidden">✓ Message sent! We'll be in touch soon.</p>
+                        </div>
+
+                        <!-- ACTION BUTTONS -->
+                        <div class="flex gap-4 flex-wrap">
+                            <a href="https://www.cumc.org.uk/meets/upcoming" class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-semibold flex gap-2 items-center transition">
+                                <i class="fas fa-calendar"></i> View CUMC Events
+                            </a>
+                            <a href="https://www.cumc.org.uk/about/committee" class="bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-lg font-semibold flex gap-2 items-center transition">
+                                <i class="fas fa-envelope"></i> Contact Committee
+                            </a>
+                            <button onclick="restartFlowchart()" class="border-2 border-gray-400 text-gray-700 hover:border-gray-600 hover:text-gray-900 px-6 py-3 rounded-lg font-semibold flex gap-2 items-center transition">
+                                <i class="fas fa-redo"></i> Start Over
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- FOOTER -->
+        <footer class="bg-gray-900 text-white mt-12 py-8 border-t border-gray-800">
+            <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <p class="mb-2"><strong>Cambridge University Mountaineering Club</strong></p>
+                <p class="text-gray-400 mb-4">Climbing Skills Pathway | Interactive Development Guide</p>
+                <div class="flex justify-center gap-4 mb-4">
+                    <a href="https://www.cumc.org.uk" class="text-gray-400 hover:text-white transition"><i class="fas fa-globe"></i> Website</a>
+                    <a href="https://www.facebook.com/cumcofficial/" class="text-gray-400 hover:text-white transition"><i class="fab fa-facebook"></i> Facebook</a>
+                    <a href="https://www.instagram.com/cumcofficial" class="text-gray-400 hover:text-white transition"><i class="fab fa-instagram"></i> Instagram</a>
+                </div>
+                <p class="text-gray-500 text-sm">Train smart, rest well, listen to your body.</p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // State & tracking
+        const state = {
+            level: null,
+            discipline: null,
+            commitment: null,
+            goal: null,
+            completedStages: []
+        };
+
+        // Load from localStorage
+        function loadProgress() {
+            const saved = localStorage.getItem('cumcClimbingProgress');
+            if (saved) {
+                Object.assign(state, JSON.parse(saved));
+                if (state.level && state.discipline && state.commitment && state.goal) {
+                    showStage(5);
+                    displayResults();
+                }
+            }
+        }
+
+        // Save to localStorage
+        function saveProgress() {
+            localStorage.setItem('cumcClimbingProgress', JSON.stringify(state));
+        }
+
+        // Skill progressions data with detailed info
+        const progressions = {
+            beginner: [
+                {
+                    skill: 'Footwork & Stance',
+                    desc: 'Your feet do 70% of the work. Learn precise placement and trust your feet.',
+                    checklist: [
+                        'Practice placing your feet on small holds',
+                        'Learn to stand on your toes, not your heels',
+                        'Keep hips close to the wall',
+                        'Practice weight distribution on each foot',
+                        'Build ankle strength and flexibility',
+                        'Climb slowly to focus on foot precision'
+                    ],
+                    resources: [
+                        { title: 'Footwork Essentials for Beginners', url: 'https://www.youtube.com/embed/v2s7TwFPwgg' },
+                        { title: 'Better Footwork in 5 Minutes', url: 'https://www.youtube.com/embed/E0cANMf1FMU' }
+                    ]
+                },
+                {
+                    skill: 'Grip Technique',
+                    desc: 'Master open-hand and half-crimp. Never use full crimp as a beginner.',
+                    checklist: [
+                        'Learn the open-hand grip (safest)',
+                        'Understand half-crimp grip (mid-finger)',
+                        'Know when to use each grip type',
+                        'Avoid full-crimp until month 3+',
+                        'Practice grip strength progressively',
+                        'Use larger holds to build confidence'
+                    ],
+                    resources: [
+                        { title: 'Understanding Grip Types', url: 'https://www.youtube.com/embed/pLp-vb5tYN8' },
+                        { title: 'Crimp Grip Explained', url: 'https://www.youtube.com/embed/sTn4F0N8uNs' }
+                    ]
+                },
+                {
+                    skill: 'Body Positioning',
+                    desc: 'Keep hips close, straight arms. This is the #1 beginner mistake to avoid.',
+                    checklist: [
+                        'Keep hips close to the wall at all times',
+                        'Use straight arms - avoid bent arm climbing',
+                        'Keep shoulders relaxed',
+                        'Turn your hips to reach holds',
+                        'Practice on vertical walls first',
+                        'Focus on efficiency over strength'
+                    ],
+                    resources: [
+                        { title: 'Body Positioning Fundamentals', url: 'https://www.youtube.com/embed/xUuG45MlHQ0' },
+                        { title: 'Hip Engagement for Beginners', url: 'https://www.youtube.com/embed/1cOJ7hzDDlA' }
+                    ]
+                },
+                {
+                    skill: 'Safety & Belaying',
+                    desc: 'Master rope management. Safety is non-negotiable.',
+                    checklist: [
+                        'Learn all essential knots (figure-8 follow-through)',
+                        'Master belay device operation',
+                        'Understand brake hand position',
+                        'Learn communication commands (take, slack, lowering)',
+                        'Know pre-climb safety checks',
+                        'Get certified if climbing outdoors'
+                    ],
+                    resources: [
+                        { title: 'Beginner Climbing Safety Guide', url: 'https://www.youtube.com/embed/z-Cbu9_5C0U' },
+                        { title: 'Top Rope Belay Setup', url: 'https://www.youtube.com/embed/Hs_0KaU2jM0' }
+                    ]
+                }
+            ],
+            intermediate: [
+                {
+                    skill: 'Heel Hooks (7-week)',
+                    desc: 'Week 1-2: Passive. Week 3-4: 20% weight. Week 5-6: 50% weight. Week 7+: Dynamic.',
+                    checklist: [
+                        'Week 1-2: Just place heel on wall, no weight',
+                        'Week 3-4: Transfer 10-20% of body weight to hook',
+                        'Week 5-6: Put 50% weight on the hook',
+                        'Focus on hip engagement when hooking',
+                        'Start on angled walls (45 degrees)',
+                        'Avoid heel hook on sharp edges',
+                        'Week 7+: Dynamic hooks with explosive power'
+                    ],
+                    resources: [
+                        { title: 'Heel Hook Progression Guide', url: 'https://www.youtube.com/embed/2q0OzlpR7Ug' },
+                        { title: 'Perfect Your Heel Hooks', url: 'https://www.youtube.com/embed/CPnJk-9uNKs' }
+                    ]
+                },
+                {
+                    skill: 'Toe Hooks',
+                    desc: 'Similar progression to heel hooks. Essential for overhang climbing.',
+                    checklist: [
+                        'Start with light toe placement',
+                        'Progress weight transfer gradually',
+                        'Learn to lock your ankle',
+                        'Practice on moderate overhangs',
+                        'Combine with hip positioning',
+                        'Build ankle strength'
+                    ],
+                    resources: [
+                        { title: 'Toe Hook Technique Breakdown', url: 'https://www.youtube.com/embed/xSZjM0x2-QQ' },
+                        { title: 'Hook Work for Overhangs', url: 'https://www.youtube.com/embed/8_VkfKJO5IM' }
+                    ]
+                },
+                {
+                    skill: 'Dynos (4-phase)',
+                    desc: 'Phase 1: Static. Phase 2: Hand jumps. Phase 3: Full (2-3ft). Phase 4: Long (4-6ft+).',
+                    checklist: [
+                        'Phase 1: Static jumps (feet only)',
+                        'Phase 2: Hand jumps (quarter dynos)',
+                        'Phase 3: Full dynos (2-3 feet)',
+                        'Learn proper landing technique',
+                        'Use thick mats for protection',
+                        'Build explosive power',
+                        'Phase 4: Long dynos with confidence'
+                    ],
+                    resources: [
+                        { title: 'Dyno Technique Breakdown', url: 'https://www.youtube.com/embed/y-2eVXM7xZU' },
+                        { title: 'Dyno Training for All Levels', url: 'https://www.youtube.com/embed/8a-0hRB6bWA' }
+                    ]
+                },
+                {
+                    skill: 'Mantels',
+                    desc: 'Push yourself over holds. Critical for bouldering and topping out.',
+                    checklist: [
+                        'Learn the transition to mantel',
+                        'Practice on low walls first',
+                        'Master hand positioning',
+                        'Develop shoulder and core strength',
+                        'Practice weight shifting',
+                        'Learn to mantel cleanly without slipping'
+                    ],
+                    resources: [
+                        { title: 'Mantel Training & Technique', url: 'https://www.youtube.com/embed/RwVx4GDrpbY' },
+                        { title: 'How to Mantel Like a Pro', url: 'https://www.youtube.com/embed/L3tZ4Bnmn9c' }
+                    ]
+                }
+            ],
+            advanced: [
+                {
+                    skill: 'Fingerboard Training',
+                    desc: 'Progressive loading. Start full-crimp only. Max 1x per week.',
+                    checklist: [
+                        'Never train half-crimp until month 2+',
+                        'Always full-crimp for fingerboard work',
+                        'Start with bodyweight hangs only',
+                        'Add weight progressively (5 lbs increments)',
+                        'Limit to 1 session per week maximum',
+                        'Warm up thoroughly before hanging',
+                        'Vary hold sizes (25mm, 20mm, 18mm)'
+                    ],
+                    resources: [
+                        { title: 'Fingerboard Training Protocols', url: 'https://www.youtube.com/embed/6PNdkiK7m9A' },
+                        { title: 'Advanced Hangboard Training', url: 'https://www.youtube.com/embed/UcvxwWM6eOs' }
+                    ]
+                },
+                {
+                    skill: 'Campus Board Work',
+                    desc: 'Advanced explosive power. Higher injury risk. Get coaching.',
+                    checklist: [
+                        'Build solid grip strength first',
+                        'Start with double-leg training',
+                        'Progress to single-leg moves',
+                        'Use proper warm-up protocol',
+                        'Limit to short sessions (15-20 min)',
+                        'Get expert coaching before starting',
+                        'Listen to your shoulders carefully'
+                    ],
+                    resources: [
+                        { title: 'Campus Board Training Science', url: 'https://www.youtube.com/embed/O-s6f4Ps2Ws' },
+                        { title: 'Power Development for Climbing', url: 'https://www.youtube.com/embed/eFAaD2xDLwk' }
+                    ]
+                },
+                {
+                    skill: 'Lead Climbing',
+                    desc: 'Climb with you placing protection. High mental and physical demands.',
+                    checklist: [
+                        'Get ATC (advance training course) certification',
+                        'Learn rope placement and safety',
+                        'Build mental confidence at height',
+                        'Practice clipping technique',
+                        'Learn to fall safely',
+                        'Develop endurance for longer routes',
+                        'Always climb with a partner'
+                    ],
+                    resources: [
+                        { title: 'Lead Climbing Techniques', url: 'https://www.youtube.com/embed/BxZz-7KxkpE' },
+                        { title: 'Lead Climbing for Beginners', url: 'https://www.youtube.com/embed/Gu3FxvmMEEY' }
+                    ]
+                },
+                {
+                    skill: 'Trad Climbing',
+                    desc: 'Outdoor rock with placed gear. Highest commitment level.',
+                    checklist: [
+                        'Complete formal trad climbing course',
+                        'Learn gear placement and anchor building',
+                        'Master rope management outdoors',
+                        'Develop route-reading skills',
+                        'Build mental game at height',
+                        'Get mentored by experienced climbers',
+                        'Start on easy, well-protected routes'
+                    ],
+                    resources: [
+                        { title: 'Introduction to Trad Climbing', url: 'https://www.youtube.com/embed/2AcW6Y-I-PE' },
+                        { title: 'Gear Placement Fundamentals', url: 'https://www.youtube.com/embed/J3r0Dn_VW5g' }
+                    ]
+                }
+            ]
+        };
+
+        // CUMC Meets
+        const cumcMeets = [
+            {
+                title: 'Monday Bouldering Social',
+                time: 'Mondays 7-9pm',
+                location: 'Kelsey Kerridge',
+                link: 'https://www.cumc.org.uk/meets/indoor',
+                desc: 'Weekly bouldering + pub social'
+            },
+            {
+                title: 'Friday Climbing Session',
+                time: 'Fridays 2-4pm',
+                location: 'Rainbow Rocket',
+                link: 'https://rainbowrocket.cc/',
+                desc: 'Sport climbing & bouldering'
+            },
+            {
+                title: 'Outdoor Weekend Trips',
+                time: 'Saturdays & Sundays',
+                location: 'Various crags',
+                link: 'https://www.cumc.org.uk/meets/outdoor',
+                desc: 'Outdoor climbing all levels'
+            }
+        ];
+
+        // Schedules
+        const schedules = {
+            beginner: {
+                'Day 1': 'Technique - slow, controlled',
+                'Day 2': 'Strength basics',
+                'Day 3': 'REST',
+                'Day 4': 'Volume/Endurance - easy climbing',
+                'Day 5-7': 'REST or yoga'
+            },
+            intermediate: {
+                'Day 1': 'Technique drills',
+                'Day 2': 'Strength - hangboard',
+                'Day 3': 'REST',
+                'Day 4': 'Endurance volume (key!)',
+                'Day 5': 'Power - dynos, sprints',
+                'Day 6-7': 'REST'
+            },
+            advanced: {
+                'Day 1': 'Technique & movement',
+                'Day 2': 'Strength - fingerboard',
+                'Day 3': 'REST',
+                'Day 4': 'Endurance work',
+                'Day 5': 'Power & max effort',
+                'Day 6-7': 'REST'
+            }
+        };
+
+        // Flow control
+        function selectLevel(level) {
+            state.level = level;
+            state.completedStages.push(1);
+            saveProgress();
+            showStage(2);
+            updateProgress(20, 'Choose your discipline');
+        }
+
+        function selectDiscipline(discipline) {
+            state.discipline = discipline;
+            state.completedStages.push(2);
+            saveProgress();
+            showStage(3);
+            updateProgress(40, 'Select your commitment');
+        }
+
+        function selectCommitment(commitment) {
+            state.commitment = commitment;
+            state.completedStages.push(3);
+            saveProgress();
+            showStage(4);
+            updateProgress(60, 'Define your goals');
+        }
+
+        function selectGoal(goal) {
+            state.goal = goal;
+            state.completedStages.push(4);
+            saveProgress();
+            showStage(5);
+            updateProgress(100, 'Your personalised pathway');
+            displayResults();
+        }
+
+        function showStage(num) {
+            document.querySelectorAll('.stage').forEach(s => s.classList.add('hidden'));
+            document.getElementById(`stage-${num}`).classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function scrollToStage(num) {
+            showStage(num);
+        }
+
+        function updateProgress(percent, label) {
+            document.getElementById('progressBar').style.width = percent + '%';
+            document.getElementById('progressLabel').textContent = label;
+            document.getElementById('progressPercent').textContent = percent + '%';
+        }
+
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('open');
+        }
+
+        function displayResults() {
+            // Profile
+            document.getElementById('profileLevel').textContent = state.level.charAt(0).toUpperCase() + state.level.slice(1);
+            document.getElementById('profileDiscipline').textContent = state.discipline.charAt(0).toUpperCase() + state.discipline.slice(1);
+            document.getElementById('profileCommitment').textContent = state.commitment.charAt(0).toUpperCase() + state.commitment.slice(1);
+            document.getElementById('profileGoal').textContent = state.goal.charAt(0).toUpperCase() + state.goal.slice(1);
+
+            // Show beginner getting started section only for beginners
+            const beginnerSection = document.getElementById('beginner-getting-started');
+            if (state.level === 'beginner') {
+                beginnerSection.classList.remove('hidden');
+            } else {
+                beginnerSection.classList.add('hidden');
+            }
+
+            // Skills with detailed info
+            let skillsHtml = '';
+            progressions[state.level].forEach((p, i) => {
+                let checklistHtml = '<ul class="skill-checklist">';
+                p.checklist.forEach(item => {
+                    checklistHtml += `<li><input type="checkbox"> <span>${item}</span></li>`;
+                });
+                checklistHtml += '</ul>';
+
+                let videosHtml = '';
+                if (p.resources && p.resources.length > 0) {
+                    videosHtml = '<div class="mt-4"><strong>Learning Videos:</strong>';
+                    p.resources.forEach(video => {
+                        videosHtml += `
+                            <div class="youtube-embed mt-3">
+                                <iframe src="${video.url}?rel=0" allowfullscreen="allowfullscreen" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"></iframe>
+                            </div>
+                            <p class="text-sm text-gray-600 mt-1">${video.title}</p>
+                        `;
+                    });
+                    videosHtml += '</div>';
+                }
+
+                skillsHtml += `
+                    <div class="border border-gray-300 rounded-lg overflow-hidden">
+                        <button onclick="toggleSkill(${i})" class="w-full p-4 bg-gray-50 hover:bg-gray-100 flex justify-between items-center font-semibold text-left transition">
+                            <span>${p.skill}</span>
+                            <span id="icon-${i}">▼</span>
+                        </button>
+                        <div id="skill-${i}" class="skill-expansion collapsed">
+                            <div class="p-4 bg-white border-t border-gray-300 space-y-4">
+                                <p class="text-gray-700">${p.desc}</p>
+                                <div>
+                                    <strong>Your Checklist:</strong>
+                                    ${checklistHtml}
+                                </div>
+                                ${videosHtml}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            document.getElementById('skill-progressions').innerHTML = skillsHtml;
+
+            // Schedule
+            let schedHtml = '';
+            for (const [day, activity] of Object.entries(schedules[state.level])) {
+                schedHtml += `
+                    <div class="bg-gradient-to-br from-blue-50 to-blue-100 p-4 rounded-lg border border-blue-200">
+                        <p class="font-semibold text-blue-900">${day}</p>
+                        <p class="text-sm text-blue-700">${activity}</p>
+                    </div>
+                `;
+            }
+            document.getElementById('trainingSchedule').innerHTML = schedHtml;
+
+            // CUMC Meets
+            let meetsHtml = '';
+            cumcMeets.forEach(m => {
+                meetsHtml += `
+                    <div class="border border-gray-300 rounded-lg p-4 card-hover">
+                        <h4 class="font-bold text-gray-900 mb-1">${m.title}</h4>
+                        <p class="text-sm text-gray-600"><i class="far fa-calendar"></i> ${m.time}</p>
+                        <p class="text-sm text-gray-600"><i class="fas fa-location-dot"></i> ${m.location}</p>
+                        <p class="text-sm text-gray-700 my-2">${m.desc}</p>
+                        <a href="${m.link}" target="_blank" class="text-blue-600 font-semibold text-sm hover:underline">Learn More →</a>
+                    </div>
+                `;
+            });
+            document.getElementById('cumc-meets').innerHTML = meetsHtml;
+
+            // Level content
+            let levelHtml = `
+                <div class="border border-gray-300 rounded-lg p-6 bg-gradient-to-r from-blue-50 to-cyan-50">
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">
+                        ${state.level === 'beginner' ? '🟢 Beginner Path (0-3 months)' : state.level === 'intermediate' ? '🟡 Intermediate Path (3-12 months)' : '🔴 Advanced Path (12+ months)'}
+                    </h3>
+                    <p class="text-gray-700">
+                        ${state.level === 'beginner' ? 'Focus on fundamentals and building confidence. 2-3 sessions/week for 30-45 mins. Perfect for learning proper technique before progressing. Overtraining is the #1 mistake.' :
+                          state.level === 'intermediate' ? 'Develop specialised skills and consistency. 4-5 sessions/week. Ready for outdoor meets and different climbing styles. Build both strength AND endurance. This is the sweet spot for sustained progress.' :
+                          'Master advanced techniques and optimise your training. 5-6 sessions/week. Higher injury risk requires smart periodisation and recovery. Consider specialising in your preferred discipline.'}
+                    </p>
+                    <div class="mt-3 p-3 bg-white rounded border-l-4 ${state.level === 'beginner' ? 'border-green-500' : state.level === 'intermediate' ? 'border-yellow-500' : 'border-red-500'}">
+                        <p class="text-sm text-gray-700">
+                            ${state.level === 'beginner' ? '<strong>Key focus:</strong> Perfect your technique. Build good habits now - they\'re hard to change later!' :
+                              state.level === 'intermediate' ? '<strong>Key focus:</strong> Consistency matters more than intensity. You\'re building the foundation for advanced climbing. Endurance training is crucial now.' :
+                              '<strong>Key focus:</strong> Strategic periodisation. Rest is as important as training. Listen to your body carefully.'}
+                        </p>
+                    </div>
+                </div>
+            `;
+            document.getElementById('level-content').innerHTML = levelHtml;
+        }
+
+        function toggleSkill(index) {
+            const element = document.getElementById(`skill-${index}`);
+            const icon = document.getElementById(`icon-${index}`);
+            element.classList.toggle('collapsed');
+            element.classList.toggle('expanded');
+            icon.textContent = element.classList.contains('expanded') ? '▲' : '▼';
+        }
+
+        function submitContact(e) {
+            e.preventDefault();
+            document.getElementById('contact-message').classList.remove('hidden');
+            document.getElementById('contact-form').reset();
+            setTimeout(() => {
+                document.getElementById('contact-message').classList.add('hidden');
+            }, 3000);
+        }
+
+        function restartFlowchart() {
+            localStorage.removeItem('cumcClimbingProgress');
+            state.level = null;
+            state.discipline = null;
+            state.commitment = null;
+            state.goal = null;
+            state.completedStages = [];
+            updateProgress(0, 'Getting started...');
+            showStage(1);
+        }
+
+        // Init
+        window.addEventListener('load', loadProgress);
+    </script>
+</body>
+</html>
