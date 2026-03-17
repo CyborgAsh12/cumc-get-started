@@ -110,24 +110,40 @@
             overflow: hidden;
         }
 
-        .youtube-embed {
-            position: relative;
-            width: 100%;
-            padding-bottom: 56.25%;
-            height: 0;
-            overflow: hidden;
+        .video-link-card {
+            background: white;
+            border: 1px solid #d1d5db;
             border-radius: 8px;
-            margin-bottom: 1rem;
+            padding: 1rem;
+            transition: all 0.3s ease;
         }
 
-        .youtube-embed iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border: none;
-            border-radius: 8px;
+        .video-link-card:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-color: #0052cc;
+        }
+
+        .video-title {
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 0.3rem;
+        }
+
+        .video-source {
+            font-size: 0.85rem;
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+
+        .video-link-card a {
+            color: #0052cc;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .video-link-card a:hover {
+            text-decoration: underline;
         }
 
         .skill-checklist {
@@ -463,7 +479,7 @@
                                             <li>Mondays 7-9pm at Kelsey Kerridge bouldering wall</li>
                                             <li>Followed by a trip to the pub to meet other members</li>
                                             <li><strong>No experience needed</strong> - everyone starts here</li>
-                                            <li>£0 if you're a member, £6 if not (one free try-out session available)</li>
+                                            <li>Check current pricing on the CUMC website for entry fees</li>
                                         </ul>
                                         <p class="pt-2"><strong>What to expect:</strong> Friendly, supportive atmosphere. Experienced climbers will show you the basics. No pressure, just learning.</p>
                                     </div>
@@ -481,21 +497,22 @@
                                             <div class="border border-green-300 rounded p-3 bg-green-50">
                                                 <p class="font-bold text-green-900 mb-2">What CUMC Provides (Free for Members)</p>
                                                 <ul class="text-sm text-gray-700 space-y-1">
+                                                    <li>✓ Climbing shoes (FREE to hire!)</li>
                                                     <li>✓ Harness (rock climbing)</li>
                                                     <li>✓ Rope & carabiners</li>
                                                     <li>✓ Climbing guidebooks</li>
-                                                    <li>✓ Crash pads (bouldering)</li>
-                                                    <li><a href="https://www.cumc.org.uk/about/gear" class="text-blue-600 font-semibold hover:underline">View all available gear →</a></li>
+                                                    <li>✓ Chalk & other gear</li>
+                                                    <li><a href="https://www.cumc.org.uk/about/gear" class="text-blue-600 font-semibold hover:underline">See full gear library →</a></li>
                                                 </ul>
                                             </div>
                                             <div class="border border-green-300 rounded p-3 bg-green-50">
-                                                <p class="font-bold text-green-900 mb-2">What You Should Buy</p>
+                                                <p class="font-bold text-green-900 mb-2">Important Notes</p>
                                                 <ul class="text-sm text-gray-700 space-y-1">
-                                                    <li>✓ Climbing shoes (£70-150)</li>
-                                                    <li>✓ Chalk and chalk bag (£10-20)</li>
-                                                    <li>✓ Brush for holds (£5)</li>
-                                                    <li>✓ Eventually: your own harness (£30-80)</li>
-                                                    <li><a href="https://www.cumc.org.uk/about/gear" class="text-blue-600 font-semibold hover:underline">Gear advice from CUMC →</a></li>
+                                                    <li>✓ Gym entry fees still apply (ask about rates)</li>
+                                                    <li>✓ Shoes/gear rental = completely free</li>
+                                                    <li>✓ No need to buy anything to start!</li>
+                                                    <li>✓ Once comfortable, you can buy your own shoes</li>
+                                                    <li>✓ <a href="https://www.cumc.org.uk/about/gear" class="text-blue-600 font-semibold hover:underline">Browse the gear store →</a></li>
                                                 </ul>
                                             </div>
                                         </div>
@@ -512,12 +529,15 @@
                                         <p><strong>Cost:</strong> £30 per academic year (or £25 if you join in Easter term)</p>
                                         <p><strong>What membership includes:</strong></p>
                                         <ul class="list-disc list-inside space-y-2 ml-2">
-                                            <li>Free access to all club equipment (ropes, harnesses, crash pads, guidebooks)</li>
-                                            <li>Reduced rates on club meets (usually £6 indoor, £15 outdoor)</li>
+                                            <li>FREE access to all club equipment (shoes, ropes, harnesses, crash pads, guidebooks, chalk)</li>
+                                            <li>Discounted rates on club meets (typically £6-10 indoor, £15 outdoor - gym entry still applies)</li>
                                             <li>BMC (British Mountaineering Council) insurance included</li>
                                             <li>Access to exclusive social events and outdoor trips</li>
                                             <li>Club stash (hoodies, t-shirts, etc.)</li>
                                         </ul>
+                                        <div class="mt-3 p-3 bg-blue-50 border-l-4 border-blue-600 rounded">
+                                            <p class="text-sm"><strong>💡 Key Point:</strong> You don't need to buy ANY gear to start! Everything is free to hire as a member. Just focus on learning proper technique.</p>
+                                        </div>
                                         <p class="pt-3"><strong>How to join:</strong> <a href="https://www.cumc.org.uk/login" class="text-blue-600 font-semibold hover:underline">Create an account on the CUMC website and sign up in the Membership section →</a></p>
                                     </div>
                                 </div>
@@ -601,11 +621,12 @@
                                     </div>
 
                                     <div class="mb-4">
-                                        <p class="font-bold text-blue-900 mb-2">📚 Learn to Belay:</p>
+                                        <p class="font-bold text-blue-900 mb-2">📚 Learn to Belay (Indoor Meets):</p>
                                         <ul class="text-sm text-gray-700 space-y-2 ml-2">
-                                            <li>• <a href="https://www.youtube.com/watch?v=Hs_0KaU2jM0" target="_blank" class="text-blue-600 font-semibold hover:underline">Top Rope Belay Setup →</a></li>
-                                            <li>• <a href="https://theclimbingdoctor.com/" target="_blank" class="text-blue-600 font-semibold hover:underline">The Climbing Doctor (Safety) →</a></li>
-                                            <li>• Ask experienced climbers at Monday socials</li>
+                                            <li>• <a href="https://www.cumc.org.uk/meets/indoor" target="_blank" class="text-blue-600 font-semibold hover:underline">CUMC Indoor Meet Sessions →</a> (includes belay training)</li>
+                                            <li>• Ask experienced members at Monday socials</li>
+                                            <li>• One-on-one coaching available through CUMC</li>
+                                            <li>• <a href="https://www.cumc.org.uk/about/committee" target="_blank" class="text-blue-600 font-semibold hover:underline">Contact committee for training →</a></li>
                                         </ul>
                                     </div>
 
@@ -626,24 +647,25 @@
                                             <li>• At least 3+ months climbing experience</li>
                                             <li>• Strong belay skills (mandatory)</li>
                                             <li>• Comfortable on outdoor rock</li>
-                                            <li>• Suitable for: Bouldering, Sport, or Trad</li>
+                                            <li>• Suitable for: Bouldering or Sport climbing</li>
                                             <li>• Your own shoes recommended</li>
                                             <li>• Bring climbing guidebook or download beta</li>
                                         </ul>
                                     </div>
 
                                     <div class="mb-4">
-                                        <p class="font-bold text-green-900 mb-2">🧗 Learn Sport or Trad:</p>
+                                        <p class="font-bold text-green-900 mb-2">🧗 Learn Sport & Lead Climbing:</p>
                                         <ul class="text-sm text-gray-700 space-y-2 ml-2">
-                                            <li>• <a href="https://www.youtube.com/watch?v=BxZz-7KxkpE" target="_blank" class="text-green-600 font-semibold hover:underline">Lead Climbing Techniques →</a></li>
-                                            <li>• <a href="https://www.youtube.com/watch?v=2AcW6Y-I-PE" target="_blank" class="text-green-600 font-semibold hover:underline">Intro to Trad Climbing →</a></li>
+                                            <li>• <a href="https://www.cumc.org.uk/meets/indoor" target="_blank" class="text-green-600 font-semibold hover:underline">CUMC Indoor Meets & Lead Sessions →</a></li>
+                                            <li>• Learn indoors before attempting outdoors</li>
                                             <li>• Get mentored by experienced members</li>
+                                            <li>• <a href="https://www.cumc.org.uk/about/committee" target="_blank" class="text-green-600 font-semibold hover:underline">Ask committee for lead coaching →</a></li>
                                         </ul>
                                     </div>
 
                                     <div>
                                         <p class="font-bold text-green-900 mb-2">💰 Cost:</p>
-                                        <p class="text-sm text-gray-700">£15 per person typically (covers transport, gear, etc.)</p>
+                                        <p class="text-sm text-gray-700">Check CUMC website for current pricing on outdoor meets</p>
                                     </div>
                                 </div>
 
@@ -658,7 +680,6 @@
                                             <li>• Beginner friendly! Just 1-2 months OK</li>
                                             <li>• No belay skills needed</li>
                                             <li>• You spot for others (learn how)</li>
-                                            <li>• Bring crash pad for outdoor bouldering</li>
                                             <li>• Wear appropriate clothing (no loose items)</li>
                                             <li>• Good footwear recommended</li>
                                         </ul>
@@ -667,15 +688,15 @@
                                     <div class="mb-4">
                                         <p class="font-bold text-purple-900 mb-2">📚 Learn Spotting:</p>
                                         <ul class="text-sm text-gray-700 space-y-2 ml-2">
-                                            <li>• <a href="https://www.youtube.com/watch?v=8_VkfKJO5IM" target="_blank" class="text-purple-600 font-semibold hover:underline">How to Spot Climbers →</a></li>
                                             <li>• Ask at Monday socials (super friendly!)</li>
                                             <li>• Practice with experienced climbers first</li>
+                                            <li>• <a href="https://www.cumc.org.uk/meets/indoor" target="_blank" class="text-purple-600 font-semibold hover:underline">CUMC Indoor Meets →</a> for training</li>
                                         </ul>
                                     </div>
 
                                     <div>
                                         <p class="font-bold text-purple-900 mb-2">💰 Cost:</p>
-                                        <p class="text-sm text-gray-700">£6 indoor, £15 outdoor typically</p>
+                                        <p class="text-sm text-gray-700">Check CUMC website for current session pricing</p>
                                     </div>
                                 </div>
 
@@ -700,17 +721,18 @@
                                         <ul class="text-sm text-gray-700 space-y-2 ml-2">
                                             <li>• 12+ months climbing experience</li>
                                             <li>• Expert sport climbing skills first</li>
-                                            <li>• Formal trad course required (£100-200)</li>
+                                            <li>• Formal trad course required (check cost with committee)</li>
                                             <li>• Learn gear placement & anchor building</li>
                                             <li>• Mentorship from experienced member</li>
                                         </ul>
                                     </div>
 
                                     <div>
-                                        <p class="font-bold text-orange-900 mb-2">📚 Learn Leading:</p>
+                                        <p class="font-bold text-orange-900 mb-2">📚 Learn Sport & Lead Climbing:</p>
                                         <ul class="text-sm text-gray-700 space-y-2 ml-2">
-                                            <li>• <a href="https://www.youtube.com/watch?v=BxZz-7KxkpE" target="_blank" class="text-orange-600 font-semibold hover:underline">Lead Climbing 101 →</a></li>
-                                            <li>• <a href="https://theclimbingdoctor.com/" target="_blank" class="text-orange-600 font-semibold hover:underline">Injury Prevention for Leadersrs →</a></li>
+                                            <li>• <a href="https://www.cumc.org.uk/meets/indoor" target="_blank" class="text-orange-600 font-semibold hover:underline">CUMC Indoor Meet Sessions →</a> (includes lead training)</li>
+                                            <li>• <a href="https://www.cumc.org.uk/about/committee" target="_blank" class="text-orange-600 font-semibold hover:underline">Ask committee about lead coaching →</a></li>
+                                            <li>• Get mentored by experienced climbers in person</li>
                                         </ul>
                                     </div>
                                 </div>
@@ -1251,16 +1273,21 @@
 
                 let videosHtml = '';
                 if (p.resources && p.resources.length > 0) {
-                    videosHtml = '<div class="mt-4"><strong>Learning Videos:</strong>';
+                    videosHtml = '<div class="mt-4"><strong class="block mb-2">📺 Learning Videos:</strong><div class="space-y-2">';
                     p.resources.forEach(video => {
                         videosHtml += `
-                            <div class="youtube-embed mt-3">
-                                <iframe src="${video.url}?rel=0" allowfullscreen="allowfullscreen" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"></iframe>
-                            </div>
-                            <p class="text-sm text-gray-600 mt-1">${video.title}</p>
+                            <a href="${video.url}" target="_blank" class="video-link-card block hover:no-underline">
+                                <div class="flex items-start gap-3">
+                                    <span class="text-xl">▶️</span>
+                                    <div class="flex-1">
+                                        <p class="video-title">${video.title}</p>
+                                        <p class="text-xs text-blue-600 font-semibold">Click to watch →</p>
+                                    </div>
+                                </div>
+                            </a>
                         `;
                     });
-                    videosHtml += '</div>';
+                    videosHtml += '</div></div>';
                 }
 
                 skillsHtml += `
